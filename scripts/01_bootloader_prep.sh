@@ -32,6 +32,19 @@ extract_boot_components() {
 prepare_uefi() {
     echo "Preparing UEFI components..."
     
+    # Check if custom UEFI was built
+    CUSTOM_UEFI="/tmp/uefi_build/output/uefi_Jetson_RELEASE.bin"
+    if [ -f "$CUSTOM_UEFI" ]; then
+        echo "Using custom-built UEFI firmware with Debian support"
+        cp $CUSTOM_UEFI bootloader_backup/uefi_jetson_debian.bin
+    else
+        echo "Custom UEFI not found, extracting from L4T..."
+        # Extract UEFI firmware from L4T
+        if [ -f "bootloader/uefi_jetson.bin" ]; then
+            cp bootloader/uefi_jetson.bin bootloader_backup/
+        fi
+    fi
+    
     # Extract UEFI firmware
     cd bootloader_backup
     

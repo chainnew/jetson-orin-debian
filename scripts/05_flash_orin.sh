@@ -12,6 +12,7 @@ BOARD="jetson-agx-orin-devkit"
 ROOTFS_TARBALL="/tmp/debian-orin-rootfs.tar.gz"
 KERNEL_IMAGE="/tmp/orin_kernel_build/output/Image"
 DTB_FILE="/tmp/orin_dtb_custom/tegra234-orin-debian.dtb"
+CUSTOM_UEFI="/tmp/uefi_build/output/uefi_Jetson_RELEASE.bin"
 
 # Create flash directory
 mkdir -p $FLASH_DIR
@@ -47,6 +48,13 @@ prepare_rootfs_for_flash() {
     if [ -f "$DTB_FILE" ]; then
         echo "Installing custom device tree..."
         sudo cp $DTB_FILE $L4T_DIR/kernel/dtb/
+    fi
+    
+    # Copy custom UEFI if available
+    if [ -f "$CUSTOM_UEFI" ]; then
+        echo "Installing custom UEFI firmware with Debian support..."
+        sudo cp $CUSTOM_UEFI $L4T_DIR/bootloader/uefi_jetson.bin
+        echo "Custom UEFI installed - Debian boot support enabled"
     fi
     
     # Apply NVIDIA binaries to rootfs

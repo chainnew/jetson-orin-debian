@@ -76,13 +76,14 @@ check_prerequisites() {
 show_menu() {
     echo ""
     echo "Installation Steps:"
-    echo "1) Prepare Bootloader Components"
-    echo "2) Build Custom Kernel"
-    echo "3) Customize Device Tree"
-    echo "4) Create Debian Rootfs"
-    echo "5) Flash to Device"
-    echo "6) Run All Steps"
-    echo "7) Exit"
+    echo "1) Build Custom UEFI BIOS"
+    echo "2) Prepare Bootloader Components"
+    echo "3) Build Custom Kernel"
+    echo "4) Customize Device Tree"
+    echo "5) Create Debian Rootfs"
+    echo "6) Flash to Device"
+    echo "7) Run All Steps"
+    echo "8) Exit"
     echo ""
 }
 
@@ -91,23 +92,28 @@ run_step() {
     local step=$1
     local script=""
     
-    case $step in        1)
+    case $step in    case $step in
+        1)
+            script="00_uefi_build.sh"
+            print_status "Building custom UEFI BIOS (this will take 30-45 minutes)..."
+            ;;
+        2)
             script="01_bootloader_prep.sh"
             print_status "Preparing bootloader components..."
             ;;
-        2)
+        3)
             script="02_kernel_build.sh"
             print_status "Building custom kernel (this will take 30-60 minutes)..."
             ;;
-        3)
+        4)
             script="03_device_tree.sh"
             print_status "Customizing device tree..."
             ;;
-        4)
+        5)
             script="04_create_rootfs.sh"
             print_status "Creating Debian rootfs (this will take 20-30 minutes)..."
             ;;
-        5)
+        6)
             script="05_flash_orin.sh"
             print_status "Flashing Debian to device..."
             ;;
@@ -130,7 +136,7 @@ run_step() {
 # Function to run all steps
 run_all_steps() {
     print_status "Running complete installation process..."
-    print_warning "This will take 2-3 hours to complete"
+    print_warning "This will take 3-4 hours to complete"
     echo ""
     read -p "Continue? (y/N) " -n 1 -r
     echo ""
@@ -138,7 +144,7 @@ run_all_steps() {
         return
     fi
     
-    for step in {1..5}; do
+    for step in {1..6}; do
         if ! run_step $step; then
             print_error "Installation failed at step $step"
             exit 1
@@ -156,16 +162,16 @@ main() {
     
     # Interactive menu loop    while true; do
         show_menu
-        read -p "Select an option (1-7): " choice
+        read -p "Select an option (1-8): " choice
         
         case $choice in
-            1|2|3|4|5)
+            1|2|3|4|5|6)
                 run_step $choice
                 ;;
-            6)
+            7)
                 run_all_steps
                 ;;
-            7)
+            8)
                 print_status "Exiting..."
                 exit 0
                 ;;

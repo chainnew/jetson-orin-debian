@@ -18,17 +18,29 @@ The Jetson AGX Orin uses several proprietary NVIDIA components that are tightly 
 
 ```
 ┌─────────────────────┐
-│ 1. Bootloader Prep  │ ← Extract NVIDIA boot components
+│ 1. UEFI BIOS Build  │ ← Custom UEFI with Debian support
 └──────────┬──────────┘
            │
 ┌──────────▼──────────┐
-│ 2. Kernel Build     │ ← Custom kernel with Tegra support
+│ 2. Bootloader Prep  │ ← Extract NVIDIA boot components
 └──────────┬──────────┘
            │
 ┌──────────▼──────────┐
-│ 3. Device Tree      │ ← Hardware initialization config
+│ 3. Kernel Build     │ ← Custom kernel with Tegra support
 └──────────┬──────────┘
-           │┌──────────▼──────────┐
+           │
+┌──────────▼──────────┐
+│ 4. Device Tree      │ ← Hardware initialization config
+└──────────┬──────────┘
+           │
+┌──────────▼──────────┐
+│ 5. Rootfs Creation  │ ← Debian base + NVIDIA integration
+└──────────┬──────────┘
+           │
+┌──────────▼──────────┐
+│ 6. Flash to Device  │ ← Write everything to Orin
+└─────────────────────┘
+```┌──────────▼──────────┐
 │ 4. Rootfs Creation  │ ← Debian base + NVIDIA integration
 └──────────┬──────────┘
            │
@@ -60,8 +72,16 @@ jetson-debian-project/
 ├── PROJECT_SUMMARY.md          # This file
 ├── TROUBLESHOOTING.md          # Common issues and solutions
 ├── ADVANCED_CONFIG.md          # Performance tuning options
+├── UEFI_BUILD_GUIDE.md         # UEFI building documentation
 ├── install_debian_orin.sh      # Master installation script
-└── scripts/    ├── 01_bootloader_prep.sh   # Bootloader preparation
+└── scripts/
+    ├── 00_uefi_build.sh        # UEFI BIOS compilation
+    ├── 01_bootloader_prep.sh   # Bootloader preparation
+    ├── 02_kernel_build.sh      # Kernel compilation
+    ├── 03_device_tree.sh       # Device tree customization
+    ├── 04_create_rootfs.sh     # Debian rootfs creation
+    └── 05_flash_orin.sh        # Flash to device
+```    ├── 01_bootloader_prep.sh   # Bootloader preparation
     ├── 02_kernel_build.sh      # Kernel compilation
     ├── 03_device_tree.sh       # Device tree customization
     ├── 04_create_rootfs.sh     # Debian rootfs creation

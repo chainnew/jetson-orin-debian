@@ -1,0 +1,64 @@
+# Build outputs
+/tmp/
+*.log
+*.tar.gz
+*.tar.bz2
+*.tbz2
+*.deb
+*.img
+
+# Kernel build artifacts
+*.o
+*.ko
+*.mod
+*.mod.c
+modules.order
+Module.symvers
+.tmp_versions/
+vmlinux
+System.map
+Module.markers
+
+# Logs
+logs/
+*.log
+*.out
+*.err
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Downloaded files
+Linux_for_Tegra/
+l4t_*.tar.bz2
+cuda_*.deb
+driver_package*
+
+# Build directories
+build/
+output/
+rootfs/
+bootloader_backup/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+
+# Backup files
+*.bak
+*.orig
+
+# Flash workspace
+flash_workspace/
+recovery/
